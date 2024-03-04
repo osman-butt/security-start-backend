@@ -4,6 +4,8 @@ import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
 import dat3.security.repository.RoleRepository;
 import dat3.security.repository.UserWithRolesRepository;
+import dat3.security_demo.entity.SpecialUser;
+import dat3.security_demo.repository.SpecialUserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +17,16 @@ import java.util.NoSuchElementException;
 public class SetupDevUsers implements ApplicationRunner {
 
     UserWithRolesRepository userWithRolesRepository;
+    SpecialUserRepository specialUserRepository;
     RoleRepository roleRepository;
     PasswordEncoder pwEncoder;
     String passwordUsedByAll;
 
-    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository,RoleRepository roleRepository,PasswordEncoder passwordEncoder) {
+    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository,RoleRepository roleRepository,PasswordEncoder passwordEncoder,SpecialUserRepository specialUserRepository) {
         this.userWithRolesRepository = userWithRolesRepository;
         this.roleRepository = roleRepository;
         this.pwEncoder = passwordEncoder;
+        this.specialUserRepository = specialUserRepository;
 
         passwordUsedByAll = "test12";
     }
@@ -66,5 +70,13 @@ public class SetupDevUsers implements ApplicationRunner {
         userWithRolesRepository.save(user2);
         userWithRolesRepository.save(user3);
         userWithRolesRepository.save(user4);
+
+        SpecialUser specialUser =
+                new SpecialUser("specialUser","s@a.dk",pwEncoder.encode(passwordUsedByAll),"Anders","Hansen","Lyngby vej 23","Lyngby","2800");
+        specialUser.addRole(roleUser);
+        specialUser.addRole(roleAdmin);
+        specialUserRepository.save(specialUser);
+
+
     }
 }
