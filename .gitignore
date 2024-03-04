@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 
 env.properties
+SecretTokenGenerator.java
 
 ### STS ###
 .apt_generated
